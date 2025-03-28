@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Lista de Tareas</h1>
+
+        <a href="{{ url_for('add_task') }}" class="add-btn">
+            <button>Agregar Nueva Tarea</button>
+        </a>
+
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li>
+                <div>
+                    <strong>{{ task.title }}</strong>
+                    <p>{{ task.description }}</p>
+                    <span>Categoría: <strong>{{ task.category }}</strong></span>
+                </div>
+                <div class="action-buttons">
+                    <form action="{{ url_for('update_task', task_id=task.id) }}" method="post">
+                        <select name="category">
+                            <option value="Pendiente" {% if task.category == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="En progreso" {% if task.category == 'En progreso' %}selected{% endif %}>En progreso</option>
+                            <option value="Completado" {% if task.category == 'Completado' %}selected{% endif %}>Completado</option>
+                        </select>
+                        <button type="submit" class="update-btn">Actualizar</button>
+                    </form>
+                    <a href="{{ url_for('delete_task', task_id=task.id) }}" class="delete-btn">Eliminar</a>
+                </div>
+            </li>
+            {% else %}
+            <li>No hay tareas aún.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
