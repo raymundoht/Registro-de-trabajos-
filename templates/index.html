@@ -11,31 +11,42 @@
     <div class="container">
         <h1>Lista de Tareas</h1>
 
+        <!-- Boton para agregar una nueva tarea -->
         <a href="{{ url_for('add_task') }}" class="add-btn">
             <button>Agregar Nueva Tarea</button>
         </a>
 
+        <!-- Lista de tareas -->
         <ul class="task-list">
+            <!-- Itera sobre cada tarea-->
             {% for task in tasks %}
             <li>
                 <div>
+                    <!-- Muestra el titulo -->
                     <strong>{{ task.title }}</strong>
+                    <!-- Muestra la descripcion -->
                     <p>{{ task.description }}</p>
+                    <!-- Muestra la categoria-->
                     <span>Categoría: <strong>{{ task.category }}</strong></span>
                 </div>
                 <div class="action-buttons">
+                    <!-- Actualizar la categoria de la tarea -->
                     <form action="{{ url_for('update_task', task_id=task.id) }}" method="post">
                         <select name="category">
+                            <!-- Opciones para seleccionar la categoria -->
                             <option value="Pendiente" {% if task.category == 'Pendiente' %}selected{% endif %}>Pendiente</option>
                             <option value="En progreso" {% if task.category == 'En progreso' %}selected{% endif %}>En progreso</option>
                             <option value="Completado" {% if task.category == 'Completado' %}selected{% endif %}>Completado</option>
                         </select>
+                        <!-- Boton para enviar el formulario y actualizar-->
                         <button type="submit" class="update-btn">Actualizar</button>
                     </form>
+                    <!-- Enlace para eliminar la tarea -->
                     <a href="{{ url_for('delete_task', task_id=task.id) }}" class="delete-btn">Eliminar</a>
                 </div>
             </li>
             {% else %}
+            <!-- Mensaje -->
             <li>No hay tareas aún.</li>
             {% endfor %}
         </ul>
